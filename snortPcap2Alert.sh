@@ -40,7 +40,7 @@
 ARG=${1}
 
 # Binaries
-#SNORT="$(/usr/bin/which snort)"
+SNORT="$(/usr/bin/which snort)"
 ECHO="$(/usr/bin/which echo)"
 TOUCH="$(/usr/bin/which touch)"
 RM="$(/usr/bin/which rm)"
@@ -56,6 +56,7 @@ CURRENTDIR="$(${PWD})"
 LOCKFILE=${CURRENTDIR}/${ARG}/snort_pcap2alert.lock
 STORAGEDIR=${CURRENTDIR}/${ARG}/snort_out
 PCAPSRCDIR=${CURRENTDIR}/${ARG}/pcaps
+SNORTCONFFILE='/etc/snort/snort.conf'
 
 # If no arg is given, set default directories
 if [[ -z ${ARG} ]]; then
@@ -87,7 +88,7 @@ else
 
 		# Check if some process is working on this pcap file
         if [[ -z ${openfile} ]]; then
-            ${SNORT} -q -A full -c /etc/snort/snort.conf -r ${PCAPSRCDIR}/${file} -l ${workdir}
+            ${SNORT} -q -A full -c ${SNORTCONFFILE} -r ${PCAPSRCDIR}/${file} -l ${workdir}
 
         	# Check if file size is greater 0
         	if [[ -s ${workdir}/alert ]]; then
